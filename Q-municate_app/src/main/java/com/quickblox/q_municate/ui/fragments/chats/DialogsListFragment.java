@@ -255,6 +255,9 @@ public class DialogsListFragment extends BaseLoaderFragment<List<DialogWrapper>>
 
     private void updateDialog(String dialogId) {
         QBChatDialog qbChatDialog = dataManager.getQBChatDialogDataManager().getByDialogId(dialogId);
+        if(!isDialogValid(qbChatDialog)) {
+            return;
+        }
         DialogWrapper dialogWrapper = new DialogWrapper(getContext(), dataManager, qbChatDialog);
         Log.i(TAG, "updateDialog dialogWrapper="+dialogWrapper.getTotalCount());
         dialogsListAdapter.updateItem(dialogWrapper);
@@ -268,6 +271,10 @@ public class DialogsListFragment extends BaseLoaderFragment<List<DialogWrapper>>
                 break;
             }
         }
+    }
+
+    private boolean isDialogValid(QBChatDialog qbChatDialog) {
+        return !qbChatDialog.getOccupants().isEmpty();
     }
 
     @OnItemClick(R.id.chats_listview)
